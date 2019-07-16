@@ -25,7 +25,7 @@ The idea is that the tool is fed an initial (set of) finding(s). These findings 
 		
 ### Vision:
 
-- Ultimately, the findings package will contain a vast amount of finding implementations, each with their version of the Investigate() method, which produces 0 or more findings which will be recursively Investigate()d.
+- Ultimately, the [finding](https://github.com/tracelabs/gumshoe/tree/master/finding) package will contain a vast amount of implementations, each with their version of the Investigate() method, which produces 0 or more findings (of the same, or of other types). The produced findings are Investigate()d, and the pattern continues recursively.
  
 ### Proposed Design:
 
