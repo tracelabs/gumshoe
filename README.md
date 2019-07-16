@@ -6,7 +6,7 @@ The idea is that the tool is fed an initial (set of) finding(s). These findings 
 
 ### Some Concepts
 
-- Investigation: the "current" ongoing investivation
+- Investigation: the "current" ongoing investigation
 - Finding: any data that is either fed into or produced by the investigation. These are many distinct kinds of finding types:
 	- Personally Identifiable Information:
 		- email
