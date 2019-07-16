@@ -1,35 +1,66 @@
 package investigation
 
 import (
-	"fmt"
-	"github.com/tracelabs/gumshoe/finding"
 	"sync"
 	"time"
+
+	"github.com/tracelabs/gumshoe/finding"
 )
 
-// investigation represents the currently ongoing investigation
 type investigation struct {
 	sync.RWMutex
-	Findings  map[string]finding.Finding
-	StartedAt time.Time
-	Queue     []finding.Finding
+	ongoing   sync.WaitGroup
+	processed map[string]bool
+	findings  []finding.Finding
+	startedAt time.Time
 }
 
-// Run begins the investigation by populating the Investigation
-// with the initial finding(s) provided
-func Run(initFindings ...finding.Finding) error {
-	if len(initFindings) == 0 {
-		return fmt.Errorf("no initial finding provided")
+// Run begins the investigation with the initial finding(s) provided
+func Run(fs ...finding.Finding) []finding.Finding {
+	if fs == nil || len(fs) == 0 {
+		return []finding.Finding{}
 	}
+	return investigate(fs...).findings
+}
+
+// investigate is a wrapper around the recursive processFindings func
+func investigate(fs ...finding.Finding) *investigation {
 	i := &investigation{
-		Findings:  make(map[string]finding.Finding),
-		StartedAt: time.Now(),
-		Queue:     initFindings,
+		ongoing:   sync.WaitGroup{},
+		processed: make(map[string]bool),
+		findings:  []finding.Finding{},
+		startedAt: time.Now(),
 	}
-	return i.run()
+	i.processFindings(fs...)
+	i.ongoing.Wait() // wait for all go routines to finish
+	return i
 }
 
-func (i *investigation) run() error {
-	// TODO
-	return nil
+func (i *investigation) processFindings(fs ...finding.Finding) {
+	for _, f := range fs {
+		if !i.isProcessed(f) {
+			i.markProcessed(f)
+			i.ongoing.Add(1)
+
+			go func(ff finding.Finding) {
+				defer i.ongoing.Done()
+				i.processFindings(ff.Investigate()...)
+			}(f)
+
+		}
+	}
+}
+
+func (i *investigation) markProcessed(f finding.Finding) {
+	i.Lock()
+	defer i.Unlock()
+	i.findings = append(i.findings, f)
+	i.processed[f.GetUID()] = true
+}
+
+func (i *investigation) isProcessed(f finding.Finding) bool {
+	i.RLock()
+	defer i.RUnlock()
+	_, ok := i.processed[f.GetUID()]
+	return ok
 }
