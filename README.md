@@ -8,7 +8,7 @@ The idea is that the tool is fed an initial (set of) finding(s). These findings 
 
 - Investigation: the "current" ongoing investivation
 - Finding: any data that is either fed into or produced by the investigation. These are many distinct kinds of finding types:
-	- Persnally Identifiable Information:
+	- Personally Identifiable Information:
 		- email
 		- phone number
 		- home address
