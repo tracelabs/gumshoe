@@ -55,12 +55,12 @@ func (i *investigation) markProcessed(f finding.Finding) {
 	i.Lock()
 	defer i.Unlock()
 	i.findings = append(i.findings, f)
-	i.processed[f.GetUID()] = true
+	i.processed[f.GetID()] = true
 }
 
 func (i *investigation) isProcessed(f finding.Finding) bool {
 	i.RLock()
 	defer i.RUnlock()
-	_, ok := i.processed[f.GetUID()]
+	_, ok := i.processed[f.GetID()]
 	return ok
 }

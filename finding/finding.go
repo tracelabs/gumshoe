@@ -4,4 +4,5 @@ package finding
 type Finding interface {
 	GetID() string
 	Investigate() []Finding
+	Display()
 }
