@@ -1,6 +1,6 @@
 # gumshoe
 
-Recursive OSINT investigation tool - a [TraceLabs](https://tracelabs.org) backed project
+Recursive OSINT investigation tool based on the [OSINT Framework](https://osintframework.com/) - a [TraceLabs](https://tracelabs.org) backed project
 
 The idea is that the tool is fed an initial (set of) finding(s). These findings will be used to come up with more findings, which will in turn be used to come up with even more findings in a recursive manner... until no findings are generated -- duplicates are ignored.
 
