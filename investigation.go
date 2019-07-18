@@ -1,34 +1,33 @@
-package investigation
+package gumshoe
 
 import (
+	"fmt"
 	"sync"
 	"time"
-
-	"github.com/tracelabs/gumshoe/finding"
 )
 
 type investigation struct {
 	sync.RWMutex
 	ongoing   sync.WaitGroup
 	processed map[string]bool
-	findings  []finding.Finding
+	findings  []Finding
 	startedAt time.Time
 }
 
 // Run begins the investigation with the initial finding(s) provided
-func Run(fs ...finding.Finding) []finding.Finding {
+func Run(fs ...Finding) []Finding {
 	if fs == nil || len(fs) == 0 {
-		return []finding.Finding{}
+		return []Finding{}
 	}
 	return investigate(fs...).findings
 }
 
 // investigate is a wrapper around the recursive processFindings func
-func investigate(fs ...finding.Finding) *investigation {
+func investigate(fs ...Finding) *investigation {
 	i := &investigation{
 		ongoing:   sync.WaitGroup{},
 		processed: make(map[string]bool),
-		findings:  []finding.Finding{},
+		findings:  []Finding{},
 		startedAt: time.Now(),
 	}
 	i.processFindings(fs...)
@@ -36,13 +35,13 @@ func investigate(fs ...finding.Finding) *investigation {
 	return i
 }
 
-func (i *investigation) processFindings(fs ...finding.Finding) {
+func (i *investigation) processFindings(fs ...Finding) {
 	for _, f := range fs {
 		if !i.isProcessed(f) {
 			i.markProcessed(f)
 			i.ongoing.Add(1)
 
-			go func(ff finding.Finding) {
+			go func(ff Finding) {
 				defer i.ongoing.Done()
 				i.processFindings(ff.Investigate()...)
 			}(f)
@@ -51,16 +50,16 @@ func (i *investigation) processFindings(fs ...finding.Finding) {
 	}
 }
 
-func (i *investigation) markProcessed(f finding.Finding) {
+func (i *investigation) markProcessed(f Finding) {
 	i.Lock()
 	defer i.Unlock()
 	i.findings = append(i.findings, f)
-	i.processed[f.GetID()] = true
+	i.processed[fmt.Sprintf("%s-%s", f.GetTypeName(), f.GetID())] = true
 }
 
-func (i *investigation) isProcessed(f finding.Finding) bool {
+func (i *investigation) isProcessed(f Finding) bool {
 	i.RLock()
 	defer i.RUnlock()
-	_, ok := i.processed[f.GetID()]
+	_, ok := i.processed[fmt.Sprintf("%s-%s", f.GetTypeName(), f.GetID())]
 	return ok
 }

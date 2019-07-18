@@ -44,18 +44,18 @@ type Finding interface {
 ### Vision:
 
 
-- Ultimately, the [finding](https://github.com/tracelabs/gumshoe/tree/master/finding) package will contain a vast amount of implementations
+- Ultimately, the [findings](https://github.com/tracelabs/gumshoe/tree/master/findings) package will contain a vast amount of implementations
 - These implementations will be interconnected in a directed graph by nature -- resembling the shape of how OSINT data is found in the web
 
 ![](./docs/assets/osint-graph.png)
 
-- The end user of this tool should be able to "enter" this graph of data by providing one or more finding(s) to the Run(...) function in the [investigation](https://github.com/tracelabs/gumshoe/tree/master/investigation) package
+- The end user of this tool should be able to "enter" this graph of data by providing one or more finding(s) to the Run(...) function in investigation.go
  
 ```
 // Run begins the investigation with the initial finding(s) provided
 func Run(fs ...finding.Finding) []finding.Finding {...}
 ```
 - The tool should be able to display the investigation's resultant findings in a way which highlights their relevance
-- The goal here is essentially to entirely automate the [OSINT Framework](https://osintframework.com/)
+- The goal here is essentially to automate the [OSINT Framework](https://osintframework.com/) as much as possible
 
 
