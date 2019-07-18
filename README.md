@@ -1,9 +1,9 @@
 # gumshoe [Proof of Concept - In Progress]
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/tracelabs/gumshoe)](https://goreportcard.com/report/github.com/tracelabs/gumshoe)
-[![GitHub issues](https://img.shields.io/github/issues/tracelabs/gumshoe)](https://github.com/tracelabs/gumshoe/issues)
+[![GitHub issues](https://img.shields.io/github/issues/tracelabs/gumshoe.svg)](https://github.com/tracelabs/gumshoe/issues)
 [![Documentation](https://godoc.org/github.com/tracelabs/gumshoe?status.svg)](https://godoc.org/github.com/tracelabs/gumshoe)
-[![license](https://img.shields.io/github/license/tracelabs/gumshoe)](https://github.com/tracelabs/gumshoe/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/tracelabs/gumshoe.svg)](https://github.com/tracelabs/gumshoe/blob/master/LICENSE)
 
 Recursive OSINT investigation tool based on the [OSINT Framework](https://osintframework.com/).
 
